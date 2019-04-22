@@ -38,23 +38,23 @@ service.addMovie = function(movie,callback) {
       });
     });
 };
-
-service.deleteCustomer = function(id,callback){
-    var sql = "delete FROM customer where id='"+id+"'";
-  pool.getConnection(function(err, connection) {
+service.deleteMovie = function(id,callback){
+  var sql = "delete FROM movie where id='"+id+"'";
+pool.getConnection(function(err, connection) {
+  if(err) { console.log(err); callback("fail"); return; }
+  // make the query
+  connection.query(sql, function(err, results) {
+    connection.release();
     if(err) { console.log(err); callback("fail"); return; }
-    // make the query
-    connection.query(sql, function(err, results) {
-      connection.release();
-      if(err) { console.log(err); callback("fail"); return; }
-      callback("success");
-    });
+    callback("success");
   });
+});
 }
 
-service.getCustomerById = function(id,callback){
+
+service.getMovieById = function(id,callback){
   var record = {};
-  var sql = "SELECT * FROM customer where id='"+id+"'";
+  var sql = "SELECT * FROM movie where id='"+id+"'";
   console.log("sql:"+sql);
   pool.getConnection(function(err, connection) {
     if(err) { console.log(err); callback({}); return; }
@@ -71,10 +71,10 @@ service.getCustomerById = function(id,callback){
   });
 
 };
-service.updateCustomer = function(customer,callback){
+service.updateMovie = function(movie,callback){
          pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback("fail"); return; }
-        connection.query("UPDATE customer set ? WHERE id = ? ",[customer,customer.id], function(err, results) {
+        connection.query("UPDATE movie set ? WHERE id = ? ",[movie,movie.id], function(err, results) {
           if(err){
            console.log("Error Selecting : %s ",err );
            callback("fail");

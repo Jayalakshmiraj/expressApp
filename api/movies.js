@@ -25,12 +25,24 @@ router.post('/', function(req, res, next) {
   var movie = req.body;
   service.addMovie(movie, callback);
 });
-router.put('/', function(req, res, next) {
+
+router.get('/:id', function(req, res, next) {
+  var callback = function(movie){
+    res.send(movie);
+  }
+  
+  var movieId=req.params.id;
+ var movie=service.getMovieById(movieId,callback)
+});
+
+
+router.put('/:id', function(req, res, next) {
   var callback = function(result){
     res.send({'result':result});
   }
   var movie = req.body;
-  service.putMovie(movie, callback);
+  var movieId=req.params.id;
+  service.updateMovie(movie, callback);
 });
 
 router.delete('/:id', function(req, res, next) {
